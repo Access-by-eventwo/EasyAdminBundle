@@ -29,7 +29,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [
             'num_entities' => 0,
@@ -42,7 +42,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         if ('easyadmin' !== $request->attributes->get('_route')) {
             return;
@@ -74,7 +74,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * @return bool
      */
-    public function isEasyAdminAction()
+    public function isEasyAdminAction(): bool
     {
         return isset($this->data['num_entities']) && 0 !== $this->data['num_entities'];
     }
@@ -82,7 +82,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * @return int
      */
-    public function getNumEntities()
+    public function getNumEntities(): int
     {
         return $this->data['num_entities'];
     }
@@ -90,7 +90,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * @return array
      */
-    public function getRequestParameters()
+    public function getRequestParameters(): array
     {
         return $this->data['request_parameters'];
     }
@@ -98,7 +98,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * @return array
      */
-    public function getCurrentEntityConfig()
+    public function getCurrentEntityConfig(): array
     {
         return $this->data['current_entity_configuration'];
     }
@@ -106,7 +106,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * @return array
      */
-    public function getBackendConfig()
+    public function getBackendConfig(): array
     {
         return $this->data['backend_configuration'];
     }
@@ -120,7 +120,7 @@ class EasyAdminDataCollector extends DataCollector
      *
      * @return string
      */
-    public function dump($variable)
+    public function dump($variable): string
     {
         if (class_exists(HtmlDumper::class)) {
             $cloner = new VarCloner();
@@ -142,7 +142,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'easyadmin';
     }

@@ -36,6 +36,8 @@
             <argument type="service" id="property_accessor" />
         </service>
 
+        <service id="EasyCorp\Bundle\EasyAdminBundle\Search\AutocompleteInterface" alias="easyadmin.autocomplete"/>
+
         <service id="easyadmin.paginator" class="EasyCorp\Bundle\EasyAdminBundle\Search\Paginator" public="true">
         </service>
 

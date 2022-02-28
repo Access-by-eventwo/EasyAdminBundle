@@ -73,7 +73,7 @@ class EasyAdminAutocompleteType extends AbstractType implements DataMapperInterf
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'easyadmin_autocomplete';
     }
