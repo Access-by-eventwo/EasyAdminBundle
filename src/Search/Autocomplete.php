@@ -12,7 +12,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  */
-class Autocomplete
+class Autocomplete implements AutocompleteInterface
 {
     private $configManager;
     private $finder;
@@ -36,7 +36,7 @@ class Autocomplete
      *
      * @throws \InvalidArgumentException
      */
-    public function find($entity, $query, $page = 1)
+    public function find($entity, $query, $page = 1): array
     {
         if (empty($entity) || empty($query)) {
             return ['results' => []];
