@@ -363,7 +363,7 @@ class CustomizedBackendTest extends AbstractTestCase
     {
         $crawler = $this->requestEditView('Product', '1');
 
-        $this->assertContains('Custom Label', trim($crawler->filter('#product_enabled')->parents()->filter('label')->text(null, true)));
+        $this->assertContains('Custom Label', trim($crawler->filter('#product_enabled')->ancestors()->filter('label')->text(null, true)));
     }
 
     public function testListViewAutocompleteField()
@@ -479,7 +479,7 @@ class CustomizedBackendTest extends AbstractTestCase
     {
         $crawler = $this->requestNewView('Product');
 
-        $this->assertContains('Custom Label', trim($crawler->filter('#product_enabled')->parents()->filter('label')->text(null, true)));
+        $this->assertContains('Custom Label', trim($crawler->filter('#product_enabled')->ancestors()->filter('label')->text(null, true)));
     }
 
     public function testSearchViewPageTitle()
