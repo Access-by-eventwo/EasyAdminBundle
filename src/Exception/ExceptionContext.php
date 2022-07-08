@@ -40,7 +40,7 @@ class ExceptionContext
         return $this->transformIntoTranslationPlaceholders($this->parameters);
     }
 
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
