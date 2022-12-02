@@ -3,6 +3,7 @@
 namespace EasyCorp\Bundle\EasyAdminBundle\Command;
 
 use EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,9 +16,12 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
+#[AsCommand(
+    name: 'make:admin:migration',
+    description: 'Exports EasyAdmin 2 config to later migrate it to EasyAdmin 3 config.'
+)]
 class MakeAdminMigrationCommand extends Command
 {
-    protected static $defaultName = 'make:admin:migration';
     private $configManager;
     private $projectDir;
 
@@ -27,13 +31,6 @@ class MakeAdminMigrationCommand extends Command
 
         $this->configManager = $configManager;
         $this->projectDir = $projectDir;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Exports EasyAdmin 2 config to later migrate it to EasyAdmin 3 config.')
-        ;
     }
 
     /**
