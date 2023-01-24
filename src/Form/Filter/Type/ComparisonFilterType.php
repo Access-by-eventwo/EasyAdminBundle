@@ -71,15 +71,23 @@ class ComparisonFilterType extends FilterType
         $paramName = static::createAlias($property);
         $data = $form->getData();
 
-        $orX = new Expr\Orx();
+        if (ComparisonType::NOT_CONTAINS === $data['comparison'] || ComparisonType::NEQ === $data['comparison']) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->not(
+                        $queryBuilder->expr()->like(sprintf('%s.%s', $alias, $property), sprintf(':%s', $paramName))
+                    ),
+                    $queryBuilder->expr()->isNull(sprintf('%s.%s', $alias, $property))
+                )
+            );
 
-        if (ComparisonType::NOT_CONTAINS === $data['comparison']) {
-            $orX->add(sprintf('%s.%s IS NULL', $alias, $property));
+            $queryBuilder
+                ->setParameter($paramName, $data['value']);
+
+            return;
         }
 
         $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $property, $data['comparison'], $paramName))
             ->setParameter($paramName, $data['value']);
-
-        $queryBuilder->orWhere($orX);
     }
 }
