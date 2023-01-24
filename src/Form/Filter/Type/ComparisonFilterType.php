@@ -87,6 +87,20 @@ class ComparisonFilterType extends FilterType
             return;
         }
 
+        if (ComparisonType::NEQ === $data['comparison']) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->neq(sprintf('%s.%s', $alias, $property), sprintf(':%s', $paramName)),
+                    $queryBuilder->expr()->isNull(sprintf('%s.%s', $alias, $property))
+                )
+            );
+
+            $queryBuilder
+                ->setParameter($paramName, $data['value']);
+
+            return;
+        }
+
         $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $property, $data['comparison'], $paramName))
             ->setParameter($paramName, $data['value']);
     }
