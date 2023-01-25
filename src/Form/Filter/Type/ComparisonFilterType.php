@@ -71,7 +71,7 @@ class ComparisonFilterType extends FilterType
         $paramName = static::createAlias($property);
         $data = $form->getData();
 
-        if (ComparisonType::NOT_CONTAINS === $data['comparison'] || ComparisonType::NEQ === $data['comparison']) {
+        if (ComparisonType::NOT_CONTAINS === $data['comparison']) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->not(
