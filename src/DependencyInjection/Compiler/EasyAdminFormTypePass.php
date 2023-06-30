@@ -15,12 +15,12 @@ class EasyAdminFormTypePass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerTypeConfigurators($container);
     }
 
-    private function registerTypeConfigurators(ContainerBuilder $container)
+    private function registerTypeConfigurators(ContainerBuilder $container): void
     {
         $configurators = new \SplPriorityQueue();
         foreach ($container->findTaggedServiceIds('easyadmin.form.type.configurator') as $id => $tags) {

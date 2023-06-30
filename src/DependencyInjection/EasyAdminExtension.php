@@ -19,7 +19,7 @@ class EasyAdminExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         // process bundle's configuration parameters
         $configs = $this->processConfigFiles($configs);
@@ -51,7 +51,7 @@ class EasyAdminExtension extends Extension
      *
      * @return array
      */
-    private function processConfigFiles(array $configs)
+    private function processConfigFiles(array $configs): array
     {
         $existingEntityNames = [];
 
