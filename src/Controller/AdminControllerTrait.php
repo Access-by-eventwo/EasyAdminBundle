@@ -141,7 +141,6 @@ trait AdminControllerTrait
     }
 
     /**
-     * @Route("/", name="easyadmin")
      *
      * @param Request $request
      *
@@ -149,6 +148,7 @@ trait AdminControllerTrait
      *
      * @throws ForbiddenActionException
      */
+    #[Route('/', name: 'easyadmin')]
     public function indexAction(Request $request)
     {
         $this->initialize($request);
