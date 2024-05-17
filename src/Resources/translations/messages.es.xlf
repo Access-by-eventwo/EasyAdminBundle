@@ -27,6 +27,10 @@
                 <source>action.save</source>
                 <target>Guardar cambios</target>
             </trans-unit>
+            <trans-unit id="action.save_and_add_another">
+                <source>action.save_and_add_another</source>
+                <target>Guardar cambios y agregar otro</target>
+            </trans-unit>
             <trans-unit id="action.cancel">
                 <source>action.cancel</source>
                 <target>Cancelar</target>
