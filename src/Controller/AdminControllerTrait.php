@@ -1018,7 +1018,21 @@ trait AdminControllerTrait
         $refererUrl = $this->request->query->get('referer', '');
         $refererAction = $this->request->query->get('action');
 
-        // 1. redirect to list if possible
+        // 1. from new action, if save and add another, redirect to new
+        if ('new' === $refererAction && $this->isActionAllowed('new')) {
+            $saveAndAddAnother = $this->request->request->has('save_and_add_another');
+
+            if (true === $saveAndAddAnother) {
+                return $this->redirectToRoute('easyadmin', [
+                    'action' => 'new',
+                    'entity' => $this->entity['name'],
+                    'menuIndex' => $this->request->query->get('menuIndex'),
+                    'submenuIndex' => $this->request->query->get('submenuIndex'),
+                ]);
+            }
+        }
+
+        // 2. redirect to list if possible
         if ($this->isActionAllowed('list')) {
             if (!empty($refererUrl)) {
                 return $this->redirect(urldecode($refererUrl));
@@ -1032,7 +1046,7 @@ trait AdminControllerTrait
             ]);
         }
 
-        // 2. from new|edit action, redirect to edit if possible
+        // 3. from new|edit action, redirect to edit if possible
         if (\in_array($refererAction, ['new', 'edit']) && $this->isActionAllowed('edit')) {
             return $this->redirectToRoute('easyadmin', [
                 'action' => 'edit',
@@ -1045,7 +1059,7 @@ trait AdminControllerTrait
             ]);
         }
 
-        // 3. from new action, redirect to new if possible
+        // 4. from new action, redirect to new if possible
         if ('new' === $refererAction && $this->isActionAllowed('new')) {
             return $this->redirectToRoute('easyadmin', [
                 'action' => 'new',

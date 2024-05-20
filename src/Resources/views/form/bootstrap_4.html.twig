@@ -373,8 +373,16 @@
 
     {# the 'save' action is hardcoded for the 'edit' and 'new' views #}
     <button type="submit" class="btn btn-primary action-save">
+        <i class="fa fa-save"></i>
         <span class="btn-label">{{ 'action.save'|trans(_trans_parameters, _translation_domain) }}</span>
     </button>
+
+    {% if easyadmin.view == 'new' %}
+        <button type="submit" class="btn btn-primary action-save-and-add-another" name="save_and_add_another">
+            <i class="fa fa-plus"></i>
+            <span class="btn-label">{{ 'action.save_and_add_another'|trans(_trans_parameters, _translation_domain) }}</span>
+        </button>
+    {% endif %}
 
     {% set _entity_actions = (easyadmin.view == 'new')
         ? easyadmin_get_actions_for_new_item(easyadmin.entity.name)

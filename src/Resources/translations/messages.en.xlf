@@ -27,6 +27,10 @@
                 <source>action.save</source>
                 <target>Save changes</target>
             </trans-unit>
+            <trans-unit id="action.save_and_add_another">
+                <source>action.save_and_add_another</source>
+                <target>Save changes and add another</target>
+            </trans-unit>
             <trans-unit id="action.continue">
                 <source>action.continue</source>
                 <target>Continue</target>
