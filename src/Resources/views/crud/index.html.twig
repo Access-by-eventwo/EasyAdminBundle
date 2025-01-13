@@ -36,12 +36,9 @@
 {% endblock %}
 
 {% block content_title %}
-    {%- apply spaceless -%}
-        {% set custom_page_title = ea.crud.customPageTitle('index') %}
-        {{ custom_page_title is null
-            ? (ea.crud.defaultPageTitle('index')|trans(ea.i18n.translationParameters, 'EasyAdminBundle'))|raw
-            : (custom_page_title|trans(ea.i18n.translationParameters))|raw }}
-    {%- endapply -%}
+    {{ custom_page_title is null
+    ? (ea.crud.defaultPageTitle('index')|trans(ea.i18n.translationParameters, 'EasyAdminBundle'))|raw
+    : (custom_page_title|trans(ea.i18n.translationParameters))|raw }}
 {% endblock %}
 
 {% set has_batch_actions = batch_actions|length > 0 %}
