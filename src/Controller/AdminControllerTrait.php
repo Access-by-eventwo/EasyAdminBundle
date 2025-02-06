@@ -149,7 +149,7 @@ trait AdminControllerTrait
      * @throws ForbiddenActionException
      */
     #[Route('/', name: 'easyadmin')]
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $this->initialize($request);
 
@@ -184,7 +184,7 @@ trait AdminControllerTrait
      * @throws NoEntitiesConfiguredException
      * @throws UndefinedEntityException
      */
-    protected function initialize(Request $request)
+    protected function initialize(Request $request): void
     {
         $this->dispatch(EasyAdminEvents::PRE_INITIALIZE);
 
@@ -222,7 +222,7 @@ trait AdminControllerTrait
         $this->dispatch(EasyAdminEvents::POST_INITIALIZE);
     }
 
-    protected function dispatch($eventName, array $arguments = [])
+    protected function dispatch($eventName, array $arguments = []): void
     {
         $arguments = array_replace([
             'config' => $this->config,
@@ -247,7 +247,7 @@ trait AdminControllerTrait
      *
      * @return JsonResponse
      */
-    protected function autocompleteAction()
+    protected function autocompleteAction(): JsonResponse
     {
         $results = $this->autocomplete->find(
             $this->request->query->get('entity'),
@@ -263,7 +263,7 @@ trait AdminControllerTrait
      *
      * @return Response
      */
-    protected function listAction()
+    protected function listAction(): Response
     {
         $this->dispatch(EasyAdminEvents::PRE_LIST);
 
@@ -289,7 +289,7 @@ trait AdminControllerTrait
      *
      * @throws \RuntimeException
      */
-    protected function editAction()
+    protected function editAction(): Response|RedirectResponse
     {
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
 
@@ -344,7 +344,7 @@ trait AdminControllerTrait
      *
      * @return Response
      */
-    protected function showAction()
+    protected function showAction(): Response
     {
         $this->dispatch(EasyAdminEvents::PRE_SHOW);
 
@@ -375,7 +375,7 @@ trait AdminControllerTrait
      *
      * @return Response|RedirectResponse
      */
-    protected function newAction()
+    protected function newAction(): Response|RedirectResponse
     {
         $this->dispatch(EasyAdminEvents::PRE_NEW);
 
@@ -423,7 +423,7 @@ trait AdminControllerTrait
      *
      * @throws EntityRemoveException
      */
-    protected function deleteAction()
+    protected function deleteAction(): RedirectResponse
     {
         $this->dispatch(EasyAdminEvents::PRE_DELETE);
 
@@ -464,7 +464,7 @@ trait AdminControllerTrait
      *
      * @return Response
      */
-    protected function searchAction()
+    protected function searchAction(): Response
     {
         $this->dispatch(EasyAdminEvents::PRE_SEARCH);
 
@@ -554,7 +554,7 @@ trait AdminControllerTrait
      *
      * @return Response
      */
-    protected function filtersAction()
+    protected function filtersAction(): Response
     {
         $filtersForm = $this->createFiltersForm($this->entity['name']);
         $filtersForm->handleRequest($this->request);
@@ -677,7 +677,7 @@ trait AdminControllerTrait
      *
      * @throws \RuntimeException
      */
-    protected function updateEntityProperty($entity, $property, $value)
+    protected function updateEntityProperty($entity, $property, $value): void
     {
         $entityConfig = $this->entity;
 
@@ -701,7 +701,7 @@ trait AdminControllerTrait
      *
      * @return object
      */
-    protected function createNewEntity()
+    protected function createNewEntity(): object
     {
         $entityFullyQualifiedClassName = $this->entity['class'];
 
@@ -714,7 +714,7 @@ trait AdminControllerTrait
      *
      * @param object $entity
      */
-    protected function persistEntity($entity)
+    protected function persistEntity($entity): void
     {
         $this->em->persist($entity);
         $this->em->flush();
@@ -726,7 +726,7 @@ trait AdminControllerTrait
      *
      * @param object $entity
      */
-    protected function updateEntity($entity)
+    protected function updateEntity($entity): void
     {
         $this->em->persist($entity);
         $this->em->flush();
@@ -738,7 +738,7 @@ trait AdminControllerTrait
      *
      * @param object $entity
      */
-    protected function removeEntity($entity)
+    protected function removeEntity($entity): void
     {
         $this->em->remove($entity);
         $this->em->flush();
@@ -757,7 +757,7 @@ trait AdminControllerTrait
      *
      * @return Pagerfanta The paginated query results
      */
-    protected function findAll($entityClass, $page = 1, $maxPerPage = 15, $sortField = null, $sortDirection = null, $dqlFilter = null)
+    protected function findAll($entityClass, $page = 1, $maxPerPage = 15, $sortField = null, $sortDirection = null, $dqlFilter = null): Pagerfanta
     {
         if (null === $sortDirection || !\in_array(strtoupper($sortDirection), ['ASC', 'DESC'])) {
             $sortDirection = 'DESC';
@@ -786,7 +786,7 @@ trait AdminControllerTrait
      *
      * @return QueryBuilder The Query Builder instance
      */
-    protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
+    protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null): QueryBuilder
     {
         return $this->queryBuilder->createListQueryBuilder($this->entity, $sortField, $sortDirection, $dqlFilter);
     }
@@ -806,7 +806,7 @@ trait AdminControllerTrait
      *
      * @return Pagerfanta The paginated query results
      */
-    protected function findBy($entityClass, $searchQuery, array $searchableFields, $page = 1, $maxPerPage = 15, $sortField = null, $sortDirection = null, $dqlFilter = null)
+    protected function findBy($entityClass, $searchQuery, array $searchableFields, $page = 1, $maxPerPage = 15, $sortField = null, $sortDirection = null, $dqlFilter = null): Pagerfanta
     {
         if (empty($sortDirection) || !\in_array(strtoupper($sortDirection), ['ASC', 'DESC'])) {
             $sortDirection = 'DESC';
@@ -837,7 +837,7 @@ trait AdminControllerTrait
      *
      * @return QueryBuilder The Query Builder instance
      */
-    protected function createSearchQueryBuilder($entityClass, $searchQuery, array $searchableFields, $sortField = null, $sortDirection = null, $dqlFilter = null)
+    protected function createSearchQueryBuilder($entityClass, $searchQuery, array $searchableFields, $sortField = null, $sortDirection = null, $dqlFilter = null): QueryBuilder
     {
         return $this->queryBuilder->createSearchQueryBuilder($this->entity, $searchQuery, $sortField, $sortDirection, $dqlFilter);
     }
@@ -850,7 +850,7 @@ trait AdminControllerTrait
      *
      * @return Form|FormInterface
      */
-    protected function createEditForm($entity, array $entityProperties)
+    protected function createEditForm($entity, array $entityProperties): Form|FormInterface
     {
         return $this->createEntityForm($entity, $entityProperties, 'edit');
     }
@@ -863,7 +863,7 @@ trait AdminControllerTrait
      *
      * @return Form|FormInterface
      */
-    protected function createNewForm($entity, array $entityProperties)
+    protected function createNewForm($entity, array $entityProperties): Form|FormInterface
     {
         return $this->createEntityForm($entity, $entityProperties, 'new');
     }
@@ -876,7 +876,7 @@ trait AdminControllerTrait
      *
      * @return FormBuilder
      */
-    protected function createEntityFormBuilder($entity, $view)
+    protected function createEntityFormBuilder($entity, $view): FormBuilder
     {
         $formOptions = $this->executeDynamicMethod('get<EntityName>EntityFormOptions', [$entity, $view]);
 
@@ -892,7 +892,7 @@ trait AdminControllerTrait
      *
      * @return array
      */
-    protected function getEntityFormOptions($entity, $view)
+    protected function getEntityFormOptions($entity, $view): array
     {
         $formOptions = $this->entity[$view]['form_options'];
         $formOptions['entity'] = $this->entity['name'];
@@ -912,7 +912,7 @@ trait AdminControllerTrait
      *
      * @throws \Exception
      */
-    protected function createEntityForm($entity, array $entityProperties, $view)
+    protected function createEntityForm($entity, array $entityProperties, $view): FormInterface
     {
         if (method_exists($this, $customMethodName = 'create'.$this->entity['name'].'EntityForm')) {
             $form = $this->{$customMethodName}($entity, $entityProperties, $view);
@@ -942,7 +942,7 @@ trait AdminControllerTrait
      *
      * @return Form|FormInterface
      */
-    protected function createDeleteForm($entityName, $entityId)
+    protected function createDeleteForm($entityName, $entityId): Form|FormInterface
     {
         /** @var FormBuilder $formBuilder */
         $formBuilder = $this->formFactory->createNamedBuilder('delete_form')
@@ -964,7 +964,7 @@ trait AdminControllerTrait
      *
      * @return bool
      */
-    protected function isActionAllowed($actionName)
+    protected function isActionAllowed($actionName): bool
     {
         return false === \in_array($actionName, $this->entity['disabled_actions'], true);
     }
@@ -983,7 +983,7 @@ trait AdminControllerTrait
      *
      * @return mixed
      */
-    protected function executeDynamicMethod($methodNamePattern, array $arguments = [])
+    protected function executeDynamicMethod($methodNamePattern, array $arguments = []): mixed
     {
         $methodName = str_replace('<EntityName>', $this->entity['name'], $methodNamePattern);
 
@@ -1001,7 +1001,7 @@ trait AdminControllerTrait
     /**
      * Generates the backend homepage and redirects to it.
      */
-    protected function redirectToBackendHomepage()
+    protected function redirectToBackendHomepage(): RedirectResponse
     {
         $homepageConfig = $this->config['homepage'];
 
@@ -1013,7 +1013,7 @@ trait AdminControllerTrait
     /**
      * @return RedirectResponse
      */
-    protected function redirectToReferrer()
+    protected function redirectToReferrer(): RedirectResponse
     {
         $refererUrl = $this->request->query->get('referer', '');
         $refererAction = $this->request->query->get('action');
@@ -1083,7 +1083,7 @@ trait AdminControllerTrait
      *
      * @return Response
      */
-    protected function renderTemplate($actionName, $templatePath, array $parameters = [])
+    protected function renderTemplate($actionName, $templatePath, array $parameters = []): Response
     {
         return $this->render($templatePath, $parameters);
     }
