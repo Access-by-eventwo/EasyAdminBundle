@@ -16,7 +16,7 @@ class EasyAdminTabSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::POST_SUBMIT => ['handleViolations', -1],
@@ -29,7 +29,7 @@ class EasyAdminTabSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function handleViolations(FormEvent $event)
+    public function handleViolations(FormEvent $event): void
     {
         $formTabs = $event->getForm()->getConfig()->getAttribute('easyadmin_form_tabs');
 

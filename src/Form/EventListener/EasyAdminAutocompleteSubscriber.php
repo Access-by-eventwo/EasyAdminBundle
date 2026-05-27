@@ -15,7 +15,7 @@ class EasyAdminAutocompleteSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -23,7 +23,7 @@ class EasyAdminAutocompleteSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $data = $event->getData() ?: [];
@@ -35,7 +35,7 @@ class EasyAdminAutocompleteSubscriber implements EventSubscriberInterface
         $form->add('autocomplete', EntityType::class, $options);
     }
 
-    public function preSubmit(FormEvent $event)
+    public function preSubmit(FormEvent $event): void
     {
         $data = $event->getData();
         $form = $event->getForm();
