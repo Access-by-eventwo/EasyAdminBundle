@@ -5,13 +5,13 @@
 
     <input type="hidden" name="action" value="{{ referer_action }}">
     <input type="hidden" name="entity" value="{{ _entity_config.name }}">
-    <input type="hidden" name="menuIndex" value="{{ app.request.get('menuIndex') }}">
-    <input type="hidden" name="submenuIndex" value="{{ app.request.get('submenuIndex') }}">
-    <input type="hidden" name="sortField" value="{{ app.request.get('sortField', '') }}">
-    <input type="hidden" name="sortDirection" value="{{ app.request.get('sortDirection', 'DESC') }}">
+    <input type="hidden" name="menuIndex" value="{{ app.request.query.get('menuIndex') }}">
+    <input type="hidden" name="submenuIndex" value="{{ app.request.query.get('submenuIndex') }}">
+    <input type="hidden" name="sortField" value="{{ app.request.query.get('sortField', '') }}">
+    <input type="hidden" name="sortDirection" value="{{ app.request.query.get('sortDirection', 'DESC') }}">
 
     {% if 'search' == referer_action %}
-    <input type="hidden" name="query" value="{{ app.request.get('query') }}">
+    <input type="hidden" name="query" value="{{ app.request.query.get('query') }}">
     {% endif %}
 
     {{ form_widget(filters_form) }}

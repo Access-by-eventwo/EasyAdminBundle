@@ -5,20 +5,20 @@
 {% extends _entity_config.templates.layout %}
 
 {% set _request_parameters = app.request.query.all|merge(_request_parameters|default({}))|merge({
-    action: app.request.get('action'),
+    action: app.request.query.get('action'),
     entity: _entity_config.name,
-    menuIndex: app.request.get('menuIndex'),
-    submenuIndex: app.request.get('submenuIndex'),
-    sortField: app.request.get('sortField'),
-    sortDirection: app.request.get('sortDirection'),
-    page: app.request.get('page', 1),
-    filters: app.request.get('filters', []),
+    menuIndex: app.request.query.get('menuIndex'),
+    submenuIndex: app.request.query.get('submenuIndex'),
+    sortField: app.request.query.get('sortField'),
+    sortDirection: app.request.query.get('sortDirection'),
+    page: app.request.query.get('page', 1),
+    filters: app.request.query.all('filters'),
     referer: null
 }) %}
 
-{% if 'search' == app.request.get('action') %}
+{% if 'search' == app.request.query.get('action') %}
     {% set _request_parameters = _request_parameters|merge({
-        query: app.request.get('query')|default(''),
+        query: app.request.query.get('query')|default(''),
     }) %}
 {% endif %}
 
@@ -30,7 +30,7 @@
 {% block body_class 'list list-' ~ _entity_config.name|lower %}
 
 {% block content_title %}
-    {% if 'search' == app.request.get('action') %}
+    {% if 'search' == app.request.query.get('action') %}
         {% set _default_title = 'search.page_title'|transchoice(paginator.nbResults, {}, 'EasyAdminBundle') %}
         {{ (_entity_config.search.title is defined ? _entity_config.search.title|transchoice(paginator.nbResults) : _default_title)|raw }}
     {% else %}
@@ -68,7 +68,7 @@
                         {% endfor %}
                         <div class="form-group">
                             <div class="form-widget">
-                                <input class="form-control" type="search" name="query" value="{{ app.request.get('query')|default('') }}" placeholder="{{ _action.label|default('action.search')|trans(_trans_parameters) }}">
+                                <input class="form-control" type="search" name="query" value="{{ app.request.query.get('query')|default('') }}" placeholder="{{ _action.label|default('action.search')|trans(_trans_parameters) }}">
                             </div>
                         </div>
                     {% endblock %}
@@ -81,7 +81,7 @@
         {% set _applied_filters = app.request.attributes.get('easyadmin').filters.applied|default(false) %}
         {% block filters_action %}
             <div class="btn-group action-filters">
-                <a href="{{ path('easyadmin', _request_parameters|merge({ action: 'filters', referer_action: app.request.get('action') })) }}" class="btn btn-secondary btn-labeled btn-labeled-right action-filters-button {{ _applied_filters ? 'action-filters-applied' }}" data-modal="#modal-filters">
+                <a href="{{ path('easyadmin', _request_parameters|merge({ action: 'filters', referer_action: app.request.query.get('action') })) }}" class="btn btn-secondary btn-labeled btn-labeled-right action-filters-button {{ _applied_filters ? 'action-filters-applied' }}" data-modal="#modal-filters">
                     <i class="fa fa-filter fa-fw"></i> {{ 'filter.title'|trans(_trans_parameters, 'EasyAdminBundle') }}{% if _applied_filters %} <span class="text-primary">({{ _applied_filters|length }})</span>{% endif %}
                 </a>
                 {% if _applied_filters %}
@@ -143,8 +143,8 @@
                 {% endif %}
 
                 {% for field, metadata in _fields_visible_by_user %}
-                    {% set isSortingField = (metadata.property == app.request.get('sortField')) or ('association' == metadata.type and app.request.get('sortField') starts with metadata.property ~ '.') %}
-                    {% set nextSortDirection = isSortingField ? (app.request.get('sortDirection') == 'DESC' ? 'ASC' : 'DESC') : 'DESC' %}
+                    {% set isSortingField = (metadata.property == app.request.query.get('sortField')) or ('association' == metadata.type and app.request.query.get('sortField') starts with metadata.property ~ '.') %}
+                    {% set nextSortDirection = isSortingField ? (app.request.query.get('sortDirection') == 'DESC' ? 'ASC' : 'DESC') : 'DESC' %}
                     {% set _column_label = metadata.label|trans(_trans_parameters) %}
                     {% set _column_icon = isSortingField ? (nextSortDirection == 'DESC' ? 'fa-arrow-up' : 'fa-arrow-down') : 'fa-sort' %}
 
@@ -182,7 +182,7 @@
                         {% endif %}
 
                         {% for field, metadata in _fields_visible_by_user %}
-                            {% set isSortingField = metadata.property == app.request.get('sortField') %}
+                            {% set isSortingField = metadata.property == app.request.query.get('sortField') %}
                             {% set _column_label =  (metadata.label ?: field|humanize)|trans(_trans_parameters)  %}
 
                             <td class="{{ isSortingField ? 'sorted' }} {{ metadata.dataType|lower }} {{ metadata.css_class }}" {{ easyadmin_config('design.rtl') ? 'dir="rtl"' }}>
@@ -393,9 +393,9 @@
         });
     </script>
 
-    {% if 'search' == app.request.get('action') %}
+    {% if 'search' == app.request.query.get('action') %}
         <script type="text/javascript">
-            const _search_query = "{{ app.request.get('query')|default('')|e('js') }}";
+            const _search_query = "{{ app.request.query.get('query')|default('')|e('js') }}";
             // the original query is prepended to allow matching exact phrases in addition to single words
             $('#main').find('table tbody td:not(.actions)').highlight($.merge([_search_query], _search_query.split(' ')));
         </script>
