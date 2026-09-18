@@ -67,11 +67,15 @@ class MetadataConfigPass implements ConfigPassInterface
 
         // introspect regular entity fields
         foreach ($entityMetadata->fieldMappings as $fieldName => $fieldMetadata) {
-            $entityPropertiesMetadata[$fieldName] = $fieldMetadata;
+            $entityPropertiesMetadata[$fieldName] = (array) $fieldMetadata;
         }
 
         // introspect fields for entity associations
         foreach ($entityMetadata->associationMappings as $fieldName => $associationMetadata) {
+            if (!\is_array($associationMetadata)) {
+                $associationMetadata = $associationMetadata->toArray();
+            }
+
             $entityPropertiesMetadata[$fieldName] = array_merge($associationMetadata, [
                 'type' => 'association',
                 'associationType' => $associationMetadata['type'],

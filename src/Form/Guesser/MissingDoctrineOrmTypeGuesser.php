@@ -3,7 +3,7 @@
 namespace EasyCorp\Bundle\EasyAdminBundle\Form\Guesser;
 
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmTypeGuesser;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -22,7 +22,7 @@ class MissingDoctrineOrmTypeGuesser extends DoctrineOrmTypeGuesser
     public function guessType($class, $property): ?TypeGuess
     {
         if (null !== $metadataAndName = $this->getMetadata($class)) {
-            /** @var ClassMetadataInfo $metadata */
+            /** @var ClassMetadata $metadata */
             $metadata = $metadataAndName[0];
 
             switch ($metadata->getTypeOfField($property)) {
