@@ -16,7 +16,7 @@
         "php": ">=8.0",
         "doctrine/common": "^3.0",
         "doctrine/doctrine-bundle": "^2.0",
-        "doctrine/orm": "^2.6.3",
+        "doctrine/orm": "^2.6.3 || ^3.0",
         "doctrine/persistence": "^3.0",
         "pagerfanta/pagerfanta": "^1.0.1|^2.0|^3.0",
         "symfony/asset": "^6.0|^7.0",

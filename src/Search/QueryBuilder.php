@@ -139,8 +139,8 @@ class QueryBuilder
             }
         }
 
-        if (0 !== \count($queryParameters)) {
-            $queryBuilder->setParameters($queryParameters);
+        foreach ($queryParameters as $name => $value) {
+            $queryBuilder->setParameter($name, $value);
         }
 
         if (!empty($dqlFilter)) {

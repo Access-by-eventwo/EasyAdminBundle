@@ -3,7 +3,7 @@
 namespace EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Guesser;
 
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\ArrayFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\BooleanFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\ComparisonFilterType;
@@ -38,12 +38,16 @@ class DoctrineOrmFilterTypeGuesser extends DoctrineOrmTypeGuesser
             return null;
         }
 
-        /** @var ClassMetadataInfo $metadata */
+        /** @var ClassMetadata $metadata */
         [$metadata, $name] = $doctrineEntityMetadata;
 
         if ($metadata->hasAssociation($property)) {
             $multiple = $metadata->isCollectionValuedAssociation($property);
             $mapping = $metadata->getAssociationMapping($property);
+            if (!\is_array($mapping)) {
+                $mapping = $mapping->toArray();
+            }
+
             $options = ['value_type_options' => [
                 'em' => $name,
                 'class' => $mapping['targetEntity'],
