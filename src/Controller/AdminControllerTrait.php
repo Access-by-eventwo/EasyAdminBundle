@@ -1031,6 +1031,7 @@ trait AdminControllerTrait
                     'entity' => $this->entity['name'],
                     'menuIndex' => $this->request->query->get('menuIndex'),
                     'submenuIndex' => $this->request->query->get('submenuIndex'),
+                    'referer' => $this->request->query->get('referer'),
                 ]);
             }
         }
